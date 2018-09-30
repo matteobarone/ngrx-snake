@@ -30,8 +30,8 @@ state: {
 
 ### Actions
 ```
-	- SetStatus
-	- AddSnakeBlock
-	- SetSnakeDirection
-	- SetHeadPosition
+- SetStatus
+- AddSnakeBlock
+- SetSnakeDirection
+- SetHeadPosition
 ```
