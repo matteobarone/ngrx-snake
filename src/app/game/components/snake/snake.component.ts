@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-snake',
@@ -6,11 +6,14 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   styleUrls: ['./snake.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SnakeComponent implements OnInit {
+export class SnakeComponent implements OnChanges {
+  @Input() snakeBlocks: number;
+  arrayOfBlocks: number[];
 
-  constructor() { }
-
-  ngOnInit() {
+  ngOnChanges(changes) {
+    if (!changes.snakeBlocks) {
+      return;
+    }
+    this.arrayOfBlocks = Array(changes.snakeBlocks.currentValue);
   }
-
 }

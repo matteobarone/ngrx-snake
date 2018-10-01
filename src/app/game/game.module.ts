@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameComponent } from './containers/game/game.component';
 import { SnakeComponent } from './components/snake/snake.component';
-import { reducers } from './store/reducers/index';
+import { reducers } from './store/reducers';
 import { StoreModule } from '@ngrx/store';
+import { BlockComponent } from './components/block/block.component';
 
 @NgModule({
   imports: [
@@ -13,6 +14,6 @@ import { StoreModule } from '@ngrx/store';
   exports: [
     GameComponent,
   ],
-  declarations: [GameComponent, SnakeComponent]
+  declarations: [GameComponent, SnakeComponent, BlockComponent]
 })
 export class GameModule { }
