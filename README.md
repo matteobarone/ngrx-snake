@@ -5,8 +5,10 @@
 app/
   game/
     components/
-      snake/
       board/
+      snake/
+      apple/
+      block/
     containers/
       game/
     store/
@@ -19,11 +21,15 @@ state: {
 	status: string = 'READY' | 'PLAY' | 'PAUSE' | 'GAME OVER',
 	board: {
 		dimension: number[] = [X, Y],
+		busyBlocks: boolean[][],
 	},
 	snake: {
 		blocks: number = X,
 		direction: string = 'TOP' | 'LEFT' | 'BOTTOM' | 'RIGHT',
 		headPosition: number[] = [X, Y],
+	},
+	apple: {
+	  position: number[] = [X, Y],
 	}
 }
 ```
@@ -31,7 +37,10 @@ state: {
 ### Actions
 ```
 - SetStatus
+- SetBoardBusyBlock
 - AddSnakeBlock
 - SetSnakeDirection
-- SetHeadPosition
+- SetSnakeHeadPosition
+- MoveSnake
+- SetApplePosition
 ```
