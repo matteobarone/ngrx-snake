@@ -1,11 +1,12 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import {GameModule} from "./game/game.module";
+import {GameModule} from './game/game.module';
+import { StoreModule } from '@ngrx/store';
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AppComponent],
-      imports: [GameModule],
+      imports: [GameModule, StoreModule.forRoot({})],
     }).compileComponents();
   }));
   it('should create the app', async(() => {
