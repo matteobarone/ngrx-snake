@@ -1,8 +1,8 @@
 import * as fromReducer from './snake.reducer';
-import {ActionReducerMap} from "@ngrx/store";
+import { ActionReducerMap } from '@ngrx/store';
 
 export interface GameState {
-  snake: fromReducer.Snake;
+  snake: fromReducer.SnakeState;
 }
 
 export const reducers: ActionReducerMap<GameState> = {

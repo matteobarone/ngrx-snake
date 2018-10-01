@@ -1,9 +1,21 @@
-import { Action } from "@ngrx/store";
+import { Action } from '@ngrx/store';
 
 export const ADD_BLOCK = '[SNAKE]: ADD BLOCK';
+export const SET_DIRECTION = '[SNAKE]: SET DIRECTION';
+export const SET_HEAD_POSITION = '[SNAKE]: SET HEAD POSITION';
 
 export class AddBlock implements Action {
   readonly type = ADD_BLOCK;
 }
 
-export type SnakeActions = AddBlock;
+export class SetDirection implements Action {
+  readonly type = SET_DIRECTION;
+  constructor(public payload: string) {}
+}
+
+export class SetHeadPosition implements Action {
+  readonly type = SET_HEAD_POSITION;
+  constructor(public payload: number[]) {}
+}
+
+export type SnakeActions = AddBlock | SetDirection | SetHeadPosition;
