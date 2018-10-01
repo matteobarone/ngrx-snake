@@ -1,8 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GameComponent } from './game.component';
-import {reducers} from '../../store/reducers';
-import {StoreModule} from '@ngrx/store';
+import { reducers } from '../../store/reducers';
+import { StoreModule } from '@ngrx/store';
+import { SnakeComponent } from '../../components/snake/snake.component';
+import { BlockComponent } from '../../components/block/block.component';
 
 describe('GameComponent', () => {
   let component: GameComponent;
@@ -10,10 +12,10 @@ describe('GameComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GameComponent ],
-      imports: [StoreModule.forRoot(reducers)]
-    })
-    .compileComponents();
+        declarations: [GameComponent, SnakeComponent, BlockComponent],
+        imports: [StoreModule.forRoot(reducers)]
+      })
+      .compileComponents();
   }));
 
   beforeEach(() => {
