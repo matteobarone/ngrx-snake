@@ -7,7 +7,7 @@ describe('snakeReducer', () => {
 
   beforeEach(() => {
     initialState = {
-      numberOfBlocks: 3,
+      blocks: [{X: 3, Y: 3}, {X: 3, Y: 2}, {X: 3, Y: 1}],
       direction: SNAKE_DIRECTIONS.RIGHT,
       headPosition: {X: 3, Y: 3},
     };
@@ -18,9 +18,9 @@ describe('snakeReducer', () => {
   });
 
   it('should add a block', () => {
-    const expectedValue = 4;
-    const newState: SnakeState = snakeReducer(initialState, new AddBlock());
-    expect(newState.numberOfBlocks).toBe(expectedValue);
+    const expectedValue = [{X: 3, Y: 4}, {X: 3, Y: 3}, {X: 3, Y: 2}, {X: 3, Y: 1}];
+    const newState: SnakeState = snakeReducer(initialState, new AddBlock({X: 3, Y: 4}));
+    expect(newState.blocks).toEqual(expectedValue);
   });
 
   it('should set direction', () => {
