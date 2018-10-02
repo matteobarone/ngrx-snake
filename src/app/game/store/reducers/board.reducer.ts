@@ -10,7 +10,7 @@ export interface BoardState {
   };
 }
 
-const INITIAL_DIMENSION = 10;
+const INITIAL_DIMENSION = 20;
 
 const initialState: BoardState = {
   dimension: {X: INITIAL_DIMENSION, Y: INITIAL_DIMENSION},
@@ -24,10 +24,10 @@ export function boardReducer(state: BoardState = initialState, action: BoardActi
         ...state,
         blocks: {
           ...state.blocks,
-          [action.payload.X]: {
-            ...state.blocks[action.payload.X],
-            [action.payload.Y]: {
-              value: true,
+          [action.payload.position.X]: {
+            ...state.blocks[action.payload.position.X],
+            [action.payload.position.Y]: {
+              value: action.payload.value,
             }
           }
         },

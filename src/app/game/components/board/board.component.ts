@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import { Dimension } from '../../game.interfaces';
 
 @Component({
@@ -6,17 +6,23 @@ import { Dimension } from '../../game.interfaces';
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss']
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnInit, OnChanges {
   @Input() boardDimension: Dimension;
   @Input() boardBlocks: any;
   boardBlocksFormatted: any;
 
   ngOnInit() {
-    this.boardBlocksFormatted = Object.keys(this.boardBlocks).reduce((acc, xKey) => {
-      const row = Object.keys(this.boardBlocks[xKey]).reduce((internalAcc, yKey) => {
-        return [...internalAcc, +this.boardBlocks[xKey][yKey].value];
+
+  }
+
+  ngOnChanges(changes) {
+    if (changes.boardBlocks.currentValue) {
+      this.boardBlocksFormatted = Object.keys(changes.boardBlocks.currentValue).reduce((acc, xKey) => {
+        const row = Object.keys(changes.boardBlocks.currentValue[xKey]).reduce((internalAcc, yKey) => {
+          return [...internalAcc, +changes.boardBlocks.currentValue[xKey][yKey].value];
+        }, []);
+        return [...acc, row];
       }, []);
-      return [...acc, row];
-    }, []);
+    }
   }
 }

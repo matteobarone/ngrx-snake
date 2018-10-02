@@ -1,9 +1,8 @@
 <h1>Ngrx/Snake</h1>
-<p>Direciton: {{(snakeDirection$ | async)}}</p>
+<p>Direciton: {{snakeDirection}}</p>
 
 <app-board
-  [boardDimension]="(boardDimension$ | async)"
+  [boardDimension]="boardDimension"
   [boardBlocks]="(boardBlocks$ | async)"></app-board>
 
 <p>Use arrows (→ ↑ ← ↓) to change direction</p>
-<p>Use enter to add a block</p>

@@ -6,3 +6,8 @@ export const snakeDirectionSelector = createSelector(
   snakeSelector,
   snake => snake.direction,
 );
+
+export const snakeHeadSelector = createSelector(
+  snakeSelector,
+  snake => snake.headPosition,
+);
