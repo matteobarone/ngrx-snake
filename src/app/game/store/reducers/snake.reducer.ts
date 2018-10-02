@@ -3,13 +3,13 @@ import { SNAKE_DIRECTIONS } from '../../components/snake/snake.constants';
 import { Dimension } from '../../game.interfaces';
 
 export interface SnakeState {
-  numberOfBlocks: number;
+  blocks: Dimension[];
   direction: string;
   headPosition: Dimension;
 }
 
 const initialState: SnakeState = {
-  numberOfBlocks: 3,
+  blocks: [{X: 3, Y: 3}, {X: 2, Y: 3}, {X: 1, Y: 3}],
   direction: SNAKE_DIRECTIONS.RIGHT,
   headPosition: {X: 3, Y: 3},
 };
@@ -19,7 +19,7 @@ export function snakeReducer(state: SnakeState = initialState, action: fromActio
     case fromActions.ADD_BLOCK:
       return {
         ...state,
-        numberOfBlocks: state.numberOfBlocks + 1,
+        blocks: [action.payload, ...state.blocks],
       };
     case fromActions.SET_DIRECTION:
       return {

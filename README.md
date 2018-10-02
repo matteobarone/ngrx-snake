@@ -15,21 +15,29 @@ app/
       ...
 ```
 
+### Intefaces
+```
+  Dimension = {
+    X: number;
+    Y: number;
+  }
+```
+
 ### State
 ```
 state: {
 	status: string = 'READY' | 'PLAY' | 'PAUSE' | 'GAME OVER',
 	board: {
-		dimension: number[] = [X, Y],
-		busyBlocks: boolean[][],
+		dimension: Dimension,
+		busyBlocks: { [key]: {[key]: {value: boolean}} },
 	},
 	snake: {
-		blocks: number = X,
+		blocks: Dimension[],
 		direction: string = 'TOP' | 'LEFT' | 'BOTTOM' | 'RIGHT',
-		headPosition: number[] = [X, Y],
+		headPosition: Dimension,
 	},
 	apple: {
-	  position: number[] = [X, Y],
+	  position: Dimenson,
 	}
 }
 ```

@@ -7,6 +7,7 @@ export const SET_HEAD_POSITION = '[SNAKE]: SET HEAD POSITION';
 
 export class AddBlock implements Action {
   readonly type = ADD_BLOCK;
+  constructor(public payload: Dimension) {}
 }
 
 export class SetDirection implements Action {

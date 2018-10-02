@@ -4,7 +4,7 @@ const snakeSelector = state => state.game.snake;
 
 export const snakeBlocksSelector = createSelector(
   snakeSelector,
-  snake => snake.numberOfBlocks,
+  snake => snake.blocks,
 );
 
 export const snakeDirectionSelector = createSelector(

@@ -22,18 +22,27 @@ export class GameComponent implements OnInit {
   ngOnInit() {
     this.store.subscribe(console.log);
     // this.store.dispatch(new fromSnake.SetHeadPosition({X: 3, Y: 4});
+    this.store.dispatch(new fromSnake.AddBlock({X: 3, Y: 4}));
     this.store.dispatch(new fromBoard.SetBusyBlock({X: 3, Y: 4}));
     document.addEventListener('keydown', (e) => this.onKeyPressArrow(e.code));
   }
 
   onKeyPressArrow(code) {
     switch (code) {
-      case 'Enter': this.store.dispatch(new fromSnake.AddBlock()); return;
-      case 'ArrowUp': this.store.dispatch(new fromSnake.SetDirection(SNAKE_DIRECTIONS.TOP)); return;
-      case 'ArrowLeft': this.store.dispatch(new fromSnake.SetDirection(SNAKE_DIRECTIONS.LEFT)); return;
-      case 'ArrowDown': this.store.dispatch(new fromSnake.SetDirection(SNAKE_DIRECTIONS.BOTTOM)); return;
-      case 'ArrowRight': this.store.dispatch(new fromSnake.SetDirection(SNAKE_DIRECTIONS.RIGHT)); return;
-      default: return;
+      case 'ArrowUp':
+        this.store.dispatch(new fromSnake.SetDirection(SNAKE_DIRECTIONS.TOP));
+        return;
+      case 'ArrowLeft':
+        this.store.dispatch(new fromSnake.SetDirection(SNAKE_DIRECTIONS.LEFT));
+        return;
+      case 'ArrowDown':
+        this.store.dispatch(new fromSnake.SetDirection(SNAKE_DIRECTIONS.BOTTOM));
+        return;
+      case 'ArrowRight':
+        this.store.dispatch(new fromSnake.SetDirection(SNAKE_DIRECTIONS.RIGHT));
+        return;
+      default:
+        return;
     }
   }
 

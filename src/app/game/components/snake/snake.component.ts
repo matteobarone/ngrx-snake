@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Dimension } from '../../game.interfaces';
 
 @Component({
   selector: 'app-snake',
@@ -6,14 +7,6 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/c
   styleUrls: ['./snake.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SnakeComponent implements OnChanges {
-  @Input() snakeBlocks: number;
-  arrayOfBlocks: number[];
-
-  ngOnChanges(changes) {
-    if (!changes.snakeBlocks) {
-      return;
-    }
-    this.arrayOfBlocks = Array(changes.snakeBlocks.currentValue);
-  }
+export class SnakeComponent {
+  @Input() snakeBlocks: Dimension[];
 }
