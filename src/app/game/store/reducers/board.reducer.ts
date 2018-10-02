@@ -1,5 +1,6 @@
 import { Dimension } from '../../game.interfaces';
 import { BoardActions, SET_BUSY_BLOCK } from '../actions/board.actions';
+import { BoardService } from '../../services/board.service';
 
 export interface BoardState {
   dimension: Dimension;
@@ -10,21 +11,12 @@ export interface BoardState {
 
 const INITIAL_DIMENSION = 10;
 
-const initialBusyBlocks = Array(INITIAL_DIMENSION).fill('').reduce((acc, el, index) => {
-  const row = Array(INITIAL_DIMENSION)
-    .fill('')
-    .reduce((internalAcc, internalEl, internalIndex) => {
-      return {...internalAcc, [internalIndex + 1]: {value: false}};
-    }, {});
-  return {...acc, [index + 1]: row};
-}, {});
-
-const initialStore: BoardState = {
+const initialState: BoardState = {
   dimension: {X: INITIAL_DIMENSION, Y: INITIAL_DIMENSION},
-  busyBlocks: initialBusyBlocks,
+  busyBlocks: BoardService.generateInitialBusyBlocks(INITIAL_DIMENSION),
 };
 
-export function boardReducer(state: BoardState = initialStore, action: BoardActions): BoardState {
+export function boardReducer(state: BoardState = initialState, action: BoardActions): BoardState {
   switch (action.type) {
     case SET_BUSY_BLOCK: {
       return {

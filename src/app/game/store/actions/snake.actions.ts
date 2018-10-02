@@ -15,9 +15,4 @@ export class SetDirection implements Action {
   constructor(public payload: string) {}
 }
 
-export class SetHeadPosition implements Action {
-  readonly type = SET_HEAD_POSITION;
-  constructor(public payload: Dimension) {}
-}
-
-export type SnakeActions = AddBlock | SetDirection | SetHeadPosition;
+export type SnakeActions = AddBlock | SetDirection;
