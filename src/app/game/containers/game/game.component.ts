@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { GameState } from '../../store/reducers';
-import * as fromAction from '../../store/actions/snake.actions';
+import * as fromSnake from '../../store/actions/snake.actions';
+import * as fromBoard from '../../store/actions/board.actions';
 import { SNAKE_DIRECTIONS } from '../../components/snake/snake.constants';
 import { snakeBlocksSelector, snakeDirectionSelector } from '../../store/selectors/snake.selectors';
 import { Observable } from 'rxjs';
@@ -20,17 +21,18 @@ export class GameComponent implements OnInit {
 
   ngOnInit() {
     this.store.subscribe(console.log);
-    // this.store.dispatch(new fromAction.SetHeadPosition([3, 4]));
+    // this.store.dispatch(new fromSnake.SetHeadPosition({X: 3, Y: 4});
+    this.store.dispatch(new fromBoard.SetBusyBlock({X: 3, Y: 4}));
     document.addEventListener('keydown', (e) => this.onKeyPressArrow(e.code));
   }
 
   onKeyPressArrow(code) {
     switch (code) {
-      case 'Enter': this.store.dispatch(new fromAction.AddBlock()); return;
-      case 'ArrowUp': this.store.dispatch(new fromAction.SetDirection(SNAKE_DIRECTIONS.TOP)); return;
-      case 'ArrowLeft': this.store.dispatch(new fromAction.SetDirection(SNAKE_DIRECTIONS.LEFT)); return;
-      case 'ArrowDown': this.store.dispatch(new fromAction.SetDirection(SNAKE_DIRECTIONS.BOTTOM)); return;
-      case 'ArrowRight': this.store.dispatch(new fromAction.SetDirection(SNAKE_DIRECTIONS.RIGHT)); return;
+      case 'Enter': this.store.dispatch(new fromSnake.AddBlock()); return;
+      case 'ArrowUp': this.store.dispatch(new fromSnake.SetDirection(SNAKE_DIRECTIONS.TOP)); return;
+      case 'ArrowLeft': this.store.dispatch(new fromSnake.SetDirection(SNAKE_DIRECTIONS.LEFT)); return;
+      case 'ArrowDown': this.store.dispatch(new fromSnake.SetDirection(SNAKE_DIRECTIONS.BOTTOM)); return;
+      case 'ArrowRight': this.store.dispatch(new fromSnake.SetDirection(SNAKE_DIRECTIONS.RIGHT)); return;
       default: return;
     }
   }

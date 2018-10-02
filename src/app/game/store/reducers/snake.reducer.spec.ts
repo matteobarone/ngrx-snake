@@ -9,7 +9,7 @@ describe('snakeReducer', () => {
     initialState = {
       numberOfBlocks: 3,
       direction: SNAKE_DIRECTIONS.RIGHT,
-      headPosition: [3, 3],
+      headPosition: {X: 3, Y: 3},
     };
   });
 
@@ -30,7 +30,7 @@ describe('snakeReducer', () => {
   });
 
   it('should set head position', () => {
-    const expectedValue = [3, 4];
+    const expectedValue = {X: 3, Y: 4};
     const newState: SnakeState = snakeReducer(initialState, new SetHeadPosition(expectedValue));
     expect(newState.headPosition).toBe(expectedValue);
   });

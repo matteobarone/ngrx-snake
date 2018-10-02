@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import { Dimension } from '../../game.interfaces';
 
 export const ADD_BLOCK = '[SNAKE]: ADD BLOCK';
 export const SET_DIRECTION = '[SNAKE]: SET DIRECTION';
@@ -15,7 +16,7 @@ export class SetDirection implements Action {
 
 export class SetHeadPosition implements Action {
   readonly type = SET_HEAD_POSITION;
-  constructor(public payload: number[]) {}
+  constructor(public payload: Dimension) {}
 }
 
 export type SnakeActions = AddBlock | SetDirection | SetHeadPosition;

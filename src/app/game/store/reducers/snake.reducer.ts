@@ -1,16 +1,17 @@
 import * as fromActions from '../actions/snake.actions';
 import { SNAKE_DIRECTIONS } from '../../components/snake/snake.constants';
+import { Dimension } from '../../game.interfaces';
 
 export interface SnakeState {
   numberOfBlocks: number;
   direction: string;
-  headPosition: number[];
+  headPosition: Dimension;
 }
 
 const initialState: SnakeState = {
   numberOfBlocks: 3,
   direction: SNAKE_DIRECTIONS.RIGHT,
-  headPosition: [3, 3],
+  headPosition: {X: 3, Y: 3},
 };
 
 export function snakeReducer(state: SnakeState = initialState, action: fromActions.SnakeActions): SnakeState {
