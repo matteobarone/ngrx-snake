@@ -1,0 +1,3 @@
+<div *ngFor="let row of boardBlocksFormatted">
+  <app-block *ngFor="let element of row" [ngClass]="{'app-block__is-busy': element}"></app-block>
+</div>

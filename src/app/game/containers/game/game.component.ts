@@ -3,10 +3,11 @@ import { select, Store } from '@ngrx/store';
 import { GameState } from '../../store/reducers';
 import * as fromSnake from '../../store/actions/snake.actions';
 import * as fromBoard from '../../store/actions/board.actions';
-import { SNAKE_DIRECTIONS } from '../../components/snake/snake.constants';
-import { snakeBlocksSelector, snakeDirectionSelector } from '../../store/selectors/snake.selectors';
+import { SNAKE_DIRECTIONS } from '../../game.constants';
+import { snakeDirectionSelector } from '../../store/selectors/snake.selectors';
 import { Observable } from 'rxjs';
 import { Dimension } from '../../game.interfaces';
+import { boardBlocksSelector, boardDimensionSelector } from '../../store/selectors/board.selectors';
 
 @Component({
   selector: 'app-game',
@@ -14,8 +15,9 @@ import { Dimension } from '../../game.interfaces';
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
-  public snakeBlocks$: Observable<Dimension> = this.store.pipe(select(snakeBlocksSelector));
   public snakeDirection$: Observable<string> = this.store.pipe(select(snakeDirectionSelector));
+  public boardDimension$: Observable<Dimension> = this.store.pipe(select(boardDimensionSelector));
+  public boardBlocks$: Observable<any> = this.store.pipe(select(boardBlocksSelector));
 
   constructor(private store: Store<GameState>) {
   }
@@ -27,7 +29,7 @@ export class GameComponent implements OnInit {
 
   private initSnake() {
     const initialBlock = {X: 3, Y: 4};
-    this.store.dispatch(new fromSnake.AddBlock(initialBlock));
+    this.store.dispatch(new fromSnake.SetHeadPosition(initialBlock));
     this.store.dispatch(new fromBoard.SetBusyBlock(initialBlock));
     document.addEventListener('keydown', (e) => this.onKeyPressArrow(e.code));
   }

@@ -1,6 +1,6 @@
 import {SnakeState, snakeReducer} from './snake.reducer';
 import { AddBlock, SetDirection } from '../actions/snake.actions';
-import { SNAKE_DIRECTIONS } from '../../components/snake/snake.constants';
+import { SNAKE_DIRECTIONS } from '../../game.constants';
 
 describe('snakeReducer', () => {
   let initialState: SnakeState;

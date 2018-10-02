@@ -32,7 +32,6 @@ state: {
 		busyBlocks: { [key]: {[key]: {value: boolean}} },
 	},
 	snake: {
-		blocks: Dimension[],
 		direction: string = 'TOP' | 'LEFT' | 'BOTTOM' | 'RIGHT',
 		headPosition: Dimension,
 	},
@@ -46,7 +45,6 @@ state: {
 ```
 - SetStatus
 - SetBoardBusyBlock
-- AddSnakeBlock
 - SetSnakeDirection
 - SetSnakeHeadPosition
 - MoveSnake

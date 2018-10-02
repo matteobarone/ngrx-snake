@@ -1,7 +1,10 @@
 :host {
-  display: block;
-  background: red;
+  display: inline-block;
+  background: #eeeeee;
   margin: 4px;
   width: 24px;
   height: 24px;
+  &.app-block__is-busy {
+    background: #222222;
+  }
 }

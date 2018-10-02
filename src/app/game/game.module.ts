@@ -5,6 +5,7 @@ import { SnakeComponent } from './components/snake/snake.component';
 import { reducers } from './store/reducers';
 import { StoreModule } from '@ngrx/store';
 import { BlockComponent } from './components/block/block.component';
+import { BoardComponent } from './components/board/board.component';
 
 @NgModule({
   imports: [
@@ -14,6 +15,6 @@ import { BlockComponent } from './components/block/block.component';
   exports: [
     GameComponent,
   ],
-  declarations: [GameComponent, SnakeComponent, BlockComponent]
+  declarations: [GameComponent, SnakeComponent, BlockComponent, BoardComponent]
 })
 export class GameModule { }
