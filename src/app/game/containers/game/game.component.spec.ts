@@ -5,6 +5,7 @@ import { reducers } from '../../store/reducers';
 import { StoreModule } from '@ngrx/store';
 import { SnakeComponent } from '../../components/snake/snake.component';
 import { BlockComponent } from '../../components/block/block.component';
+import { BoardComponent } from '../../components/board/board.component';
 
 describe('GameComponent', () => {
   let component: GameComponent;
@@ -12,7 +13,7 @@ describe('GameComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-        declarations: [GameComponent, SnakeComponent, BlockComponent],
+        declarations: [GameComponent, SnakeComponent, BlockComponent, BoardComponent],
         imports: [StoreModule.forRoot(reducers)]
       })
       .compileComponents();

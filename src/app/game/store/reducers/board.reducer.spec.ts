@@ -9,11 +9,11 @@ describe('boardReducer', () => {
 
     const initialState: BoardState = {
       dimension: {X: INITIAL_DIMENSION, Y: INITIAL_DIMENSION},
-      busyBlocks: BoardService.generateInitialBusyBlocks(INITIAL_DIMENSION),
+      blocks: BoardService.generateInitialBusyBlocks(INITIAL_DIMENSION),
     };
 
     const inputValue = {X: 3, Y: 4};
-    const newState: BoardState = boardReducer(initialState, new SetBusyBlock(inputValue));
-    expect(newState.busyBlocks[inputValue.X][inputValue.Y].value).toBe(true);
+    const newState: BoardState = boardReducer(initialState, new SetBusyBlock({position: inputValue, value: true}));
+    expect(newState.blocks[inputValue.X][inputValue.Y].value).toBe(true);
   });
 });
