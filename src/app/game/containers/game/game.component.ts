@@ -20,7 +20,7 @@ export class GameComponent implements OnInit {
   public snakeDirection: string;
   private headPosition: Dimension;
   private gameInterval: any;
-  private SPEED: number = 1000;
+  private SPEED = 1000;
   // TODO: mettere in store lo status
 
   constructor(private store: Store<GameState>) {
@@ -45,7 +45,7 @@ export class GameComponent implements OnInit {
       this.boardDimension = boardDimension;
     });
     document.addEventListener('keydown', (e) => this.onKeyPressArrow(e.code));
-    this.createGameSetInterval();
+    // this.createGameSetInterval();
   }
 
   private createGameSetInterval() {
@@ -75,13 +75,13 @@ export class GameComponent implements OnInit {
   private generateNewPosition() {
     switch (this.snakeDirection) {
       case SNAKE_DIRECTIONS.TOP:
-        return {...this.headPosition, X:this.headPosition.X - 1};
+        return {...this.headPosition, X: this.headPosition.X - 1};
       case SNAKE_DIRECTIONS.LEFT:
-        return {...this.headPosition, Y:this.headPosition.Y - 1};
+        return {...this.headPosition, Y: this.headPosition.Y - 1};
       case SNAKE_DIRECTIONS.BOTTOM:
-        return {...this.headPosition, X:this.headPosition.X + 1};
+        return {...this.headPosition, X: this.headPosition.X + 1};
       case SNAKE_DIRECTIONS.RIGHT:
-        return {...this.headPosition, Y:this.headPosition.Y + 1};
+        return {...this.headPosition, Y: this.headPosition.Y + 1};
     }
   }
 
@@ -89,7 +89,7 @@ export class GameComponent implements OnInit {
     return this.headPosition.Y <= 1 ||
       this.headPosition.Y >= this.boardDimension.Y ||
       this.headPosition.X <= 1 ||
-      this.headPosition.X >= this.boardDimension.X
+      this.headPosition.X >= this.boardDimension.X;
   }
 
   private onKeyPressArrow(code) {

@@ -1,3 +1,16 @@
+@import '~src/variables';
+
 :host {
-  display: block;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  .board {
+    &__container {
+      margin: $gap-md;
+      border: 1px solid $primary;
+    }
+    &__row {
+      display: flex;
+    }
+  }
 }

@@ -10,7 +10,7 @@ export interface BoardState {
   };
 }
 
-const INITIAL_DIMENSION = 20;
+const INITIAL_DIMENSION = 24;
 
 const initialState: BoardState = {
   dimension: {X: INITIAL_DIMENSION, Y: INITIAL_DIMENSION},

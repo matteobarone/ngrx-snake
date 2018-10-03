@@ -1,10 +1,15 @@
+@import '~src/variables';
+
+$block-size: 12px;
+
 :host {
   display: inline-block;
-  background: #eeeeee;
-  margin: 2px;
-  width: 12px;
-  height: 12px;
+  background: $secondary;
+  margin: $gap-xs;
+  width: $block-size;
+  height: $block-size;
   &.app-block__is-busy {
-    background: #222222;
+    background: $primary;
+    border-radius: $gap-xs * 2;
   }
 }
