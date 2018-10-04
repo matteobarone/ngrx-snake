@@ -1,28 +1,30 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
-import { Dimension } from '../../game.interfaces';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
-  styleUrls: ['./board.component.scss']
+  styleUrls: ['./board.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardComponent implements OnInit, OnChanges {
-  @Input() boardDimension: Dimension;
   @Input() boardBlocks: any;
-  boardBlocksFormatted: any;
+  activeBoard: any;
+  rows: string[];
+  cols: string[];
 
   ngOnInit() {
-
+    this.rows = Object.keys(this.boardBlocks);
+    this.cols = Object.keys(this.boardBlocks[1]);
   }
 
   ngOnChanges(changes) {
-    if (changes.boardBlocks.currentValue) {
-      this.boardBlocksFormatted = Object.keys(changes.boardBlocks.currentValue).reduce((acc, xKey) => {
-        const row = Object.keys(changes.boardBlocks.currentValue[xKey]).reduce((internalAcc, yKey) => {
-          return [...internalAcc, +changes.boardBlocks.currentValue[xKey][yKey].value];
-        }, []);
-        return [...acc, row];
-      }, []);
+    if (!changes.boardBlocks.currentValue) {
+      return;
     }
+    this.activeBoard = changes.boardBlocks.currentValue;
+  }
+
+  trackByFn(index) {
+    return index;
   }
 }
