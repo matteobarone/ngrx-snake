@@ -1,5 +1,5 @@
 import { Dimension } from '../../game.interfaces';
-import { BoardActions, SET_BUSY_BLOCK } from '../actions/board.actions';
+import * as fromBoard from '../actions';
 import { BoardService } from '../../services/board.service';
 
 // TODO: create interfaccia per i blocks
@@ -17,9 +17,9 @@ const initialState: BoardState = {
   blocks: BoardService.generateInitialBusyBlocks(INITIAL_DIMENSION),
 };
 
-export function boardReducer(state: BoardState = initialState, action: BoardActions): BoardState {
+export function boardReducer(state: BoardState = initialState, action: fromBoard.BoardActions): BoardState {
   switch (action.type) {
-    case SET_BUSY_BLOCK: {
+    case fromBoard.SET_BUSY_BLOCK: {
       return {
         ...state,
         blocks: {

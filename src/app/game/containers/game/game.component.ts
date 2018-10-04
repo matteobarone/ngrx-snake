@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { GameState } from '../../store/reducers';
-import * as fromSnake from '../../store/actions/snake.actions';
-import * as fromBoard from '../../store/actions/board.actions';
-import * as fromStatus from '../../store/actions/status.actions';
-import { GAME_STATUS, SNAKE_DIRECTIONS } from '../../game.constants';
-import { snakeBlocksSelector, snakeDirectionSelector, snakeHeadSelector } from '../../store/selectors/snake.selectors';
 import { Observable } from 'rxjs';
+import { GameState } from '../../store/reducers';
 import { Dimension } from '../../game.interfaces';
+import { GAME_STATUS, SNAKE_DIRECTIONS } from '../../game.constants';
+import * as fromSnake from '../../store/actions';
+import * as fromBoard from '../../store/actions';
+import * as fromStatus from '../../store/actions';
+import * as fromApple from '../../store/actions';
+import { snakeBlocksSelector, snakeDirectionSelector, snakeHeadSelector } from '../../store/selectors/snake.selectors';
 import { boardBlocksSelector, boardDimensionSelector } from '../../store/selectors/board.selectors';
 import { statusSelector } from '../../store/selectors/state.selectors';
+import { appleActiveSelector } from '../../store/selectors/apple.selectors';
 
 @Component({
   selector: 'app-game',
@@ -21,6 +23,7 @@ export class GameComponent implements OnInit {
   public boardDimension: Dimension;
   public snakeDirection: string;
   public status: string;
+  public activeApple: Dimension;
   private headPosition: Dimension;
   private snakeBlocks: Dimension[];
   private gameInterval: any;
@@ -32,6 +35,7 @@ export class GameComponent implements OnInit {
 
   ngOnInit() {
     this.store.subscribe(state => this.initState(state));
+    this.store.dispatch(new fromApple.SetActiveApple({X: this.getRandomArbitrary(2, 24), Y: this.getRandomArbitrary(2, 24)}));
     document.addEventListener('keydown', this.onKeyPress, true);
   }
 
@@ -41,6 +45,7 @@ export class GameComponent implements OnInit {
     this.snakeBlocks = snakeBlocksSelector(state);
     this.boardDimension = boardDimensionSelector(state);
     this.status = statusSelector(state);
+    this.activeApple = appleActiveSelector(state);
     console.log(state);
   }
 
@@ -161,5 +166,9 @@ export class GameComponent implements OnInit {
 
   private isGameFreezed() {
     return this.status === GAME_STATUS.PAUSE || this.status === GAME_STATUS.GAME_OVER;
+  }
+
+  private getRandomArbitrary(min, max) {
+    return Math.round(Math.random() * (max - min) + min);
   }
 }

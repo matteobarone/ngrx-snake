@@ -1,4 +1,4 @@
-import * as fromActions from '../actions/snake.actions';
+import * as fromSnake from '../actions';
 import { SNAKE_DIRECTIONS } from '../../game.constants';
 import { Dimension } from '../../game.interfaces';
 
@@ -14,25 +14,25 @@ const initialState: SnakeState = {
   headPosition: {X: 1, Y: 1},
 };
 
-export function snakeReducer(state: SnakeState = initialState, action: fromActions.SnakeActions): SnakeState {
+export function snakeReducer(state: SnakeState = initialState, action: fromSnake.SnakeActions): SnakeState {
   switch (action.type) {
-    case fromActions.ADD_BLOCK:
+    case fromSnake.ADD_BLOCK:
       return {
         ...state,
         blocks: [action.payload, ...state.blocks],
       };
-    case fromActions.REMOVE_LAST_BLOCK:
+    case fromSnake.REMOVE_LAST_BLOCK:
       const lastBlock = state.blocks[state.blocks.length - 1];
       return {
         ...state,
         blocks: state.blocks.filter(b => b !== lastBlock),
       };
-    case fromActions.SET_DIRECTION:
+    case fromSnake.SET_DIRECTION:
       return {
         ...state,
         direction: action.payload,
       };
-    case fromActions.SET_HEAD_POSITION:
+    case fromSnake.SET_HEAD_POSITION:
       return {
         ...state,
         headPosition: action.payload,

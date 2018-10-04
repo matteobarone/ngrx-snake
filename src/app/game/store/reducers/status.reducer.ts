@@ -1,6 +1,6 @@
 import { GAME_STATUS } from '../../game.constants';
 
-import * as fromStatus from '../actions/status.actions';
+import * as fromStatus from '../actions';
 
 const initialState: string = GAME_STATUS.READY;
 
