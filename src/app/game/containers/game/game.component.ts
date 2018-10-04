@@ -24,7 +24,7 @@ export class GameComponent implements OnInit {
   private headPosition: Dimension;
   private snakeBlocks: Dimension[];
   private gameInterval: any;
-  private SPEED = 500;
+  private SPEED = 100;
 
   constructor(private store: Store<GameState>) {
     this.onKeyPress = this.onKeyPress.bind(this);
@@ -32,18 +32,7 @@ export class GameComponent implements OnInit {
 
   ngOnInit() {
     this.store.subscribe(state => this.initState(state));
-    const initialBlock = this.generateInitialBlock();
-    this.store.dispatch(new fromSnake.SetHeadPosition(initialBlock));
-    this.store.dispatch(new fromSnake.AddBlock(initialBlock));
-    this.store.dispatch(new fromBoard.SetBusyBlock({position: initialBlock, value: true}));
     document.addEventListener('keydown', this.onKeyPress, true);
-  }
-
-  private generateInitialBlock() {
-    return {
-      X: Math.round(this.boardDimension.X / 2),
-      Y: Math.round(this.boardDimension.X / 2),
-    };
   }
 
   private initState(state) {
@@ -123,10 +112,10 @@ export class GameComponent implements OnInit {
   }
 
   private snakeIsOutOfBoard() {
-    return this.headPosition.Y <= 1 ||
-      this.headPosition.Y >= this.boardDimension.Y ||
-      this.headPosition.X <= 1 ||
-      this.headPosition.X >= this.boardDimension.X;
+    return this.headPosition.Y < 1 ||
+      this.headPosition.Y > this.boardDimension.Y ||
+      this.headPosition.X < 1 ||
+      this.headPosition.X > this.boardDimension.X;
   }
 
   private onKeyPress(e) {

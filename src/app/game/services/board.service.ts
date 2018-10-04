@@ -9,7 +9,7 @@ export class BoardService {
       const row = Array(initialDimension)
         .fill('')
         .reduce((internalAcc, internalEl, internalIndex) => {
-          return {...internalAcc, [internalIndex + 1]: {value: false}};
+          return {...internalAcc, [internalIndex + 1]: {value: (index === 0 && internalIndex === 0)}};
         }, {});
       return {...acc, [index + 1]: row};
     }, {});

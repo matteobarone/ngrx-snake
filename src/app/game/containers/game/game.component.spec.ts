@@ -13,7 +13,19 @@ describe('GameComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
         declarations: [GameComponent, BlockComponent, BoardComponent],
-        imports: [StoreModule.forRoot(reducers)]
+        imports: [StoreModule.forRoot(reducers, {
+          initialState: {
+            board: {
+              dimension: {X: 1, Y: 1},
+              blocks: {1: {1: {value: false}}},
+            },
+            snake: {
+              direction: 'TOP',
+              blocks: [],
+            },
+            status: 'READY',
+          }
+        })]
       })
       .compileComponents();
   }));
@@ -21,7 +33,12 @@ describe('GameComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GameComponent);
     component = fixture.componentInstance;
+    component.boardDimension = {X: 1, Y: 1};
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    fixture.destroy();
   });
 
   it('should create', () => {

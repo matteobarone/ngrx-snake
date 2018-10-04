@@ -6,12 +6,12 @@ export interface SnakeState {
   direction: string;
   blocks: Dimension[];
   headPosition?: Dimension;
-  tailPosition?: Dimension;
 }
 
 const initialState: SnakeState = {
   direction: SNAKE_DIRECTIONS.RIGHT,
-  blocks: [],
+  blocks: [{X: 1, Y: 1}],
+  headPosition: {X: 1, Y: 1},
 };
 
 export function snakeReducer(state: SnakeState = initialState, action: fromActions.SnakeActions): SnakeState {
