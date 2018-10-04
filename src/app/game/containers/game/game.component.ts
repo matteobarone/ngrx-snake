@@ -3,11 +3,13 @@ import { select, Store } from '@ngrx/store';
 import { GameState } from '../../store/reducers';
 import * as fromSnake from '../../store/actions/snake.actions';
 import * as fromBoard from '../../store/actions/board.actions';
-import { SNAKE_DIRECTIONS } from '../../game.constants';
-import {snakeDirectionSelector, snakeHeadSelector} from '../../store/selectors/snake.selectors';
+import * as fromStatus from '../../store/actions/status.actions';
+import { GAME_STATUS, SNAKE_DIRECTIONS } from '../../game.constants';
+import { snakeDirectionSelector, snakeHeadSelector } from '../../store/selectors/snake.selectors';
 import { Observable } from 'rxjs';
 import { Dimension } from '../../game.interfaces';
 import { boardBlocksSelector, boardDimensionSelector } from '../../store/selectors/board.selectors';
+import { statusSelector } from '../../store/selectors/state.selectors';
 
 @Component({
   selector: 'app-game',
@@ -18,13 +20,15 @@ export class GameComponent implements OnInit {
   public boardBlocks$: Observable<any> = this.store.pipe(select(boardBlocksSelector));
   public boardDimension: Dimension;
   public snakeDirection: string;
+  public status: string;
   private headPosition: Dimension;
   private gameInterval: any;
   private SPEED = 1000;
+
   // TODO: mettere in store lo status
 
   constructor(private store: Store<GameState>) {
-    this.onKeyPressArrow = this.onKeyPressArrow.bind(this);
+    this.onKeyPress = this.onKeyPress.bind(this);
   }
 
   ngOnInit() {
@@ -36,14 +40,13 @@ export class GameComponent implements OnInit {
     const initialBlock = {X: 3, Y: 4};
     this.store.dispatch(new fromSnake.SetHeadPosition(initialBlock));
     this.store.dispatch(new fromBoard.SetBusyBlock({position: initialBlock, value: true}));
-    this.store.pipe(select(snakeHeadSelector))
-      .subscribe(headPosition => this.headPosition = headPosition);
-    this.store.pipe(select(snakeDirectionSelector))
-      .subscribe(snakeDirection => this.snakeDirection = snakeDirection);
-    this.store.pipe(select(boardDimensionSelector))
-      .subscribe(boardDimension => this.boardDimension = boardDimension);
-    document.addEventListener('keydown', this.onKeyPressArrow, true);
-    this.createGameSetInterval();
+    this.store.subscribe(state => {
+      this.headPosition = snakeHeadSelector(state);
+      this.snakeDirection = snakeDirectionSelector(state);
+      this.boardDimension = boardDimensionSelector(state);
+      this.status = statusSelector(state);
+    });
+    document.addEventListener('keydown', this.onKeyPress, true);
   }
 
   private createGameSetInterval() {
@@ -63,10 +66,20 @@ export class GameComponent implements OnInit {
     clearInterval(this.gameInterval);
   }
 
-  private gameOver() {
-    console.log('Game over!');
+  private play() {
+    this.store.dispatch(new fromStatus.SetStatus(GAME_STATUS.PLAY));
+    this.createGameSetInterval();
+  }
+
+  private pause() {
+    this.store.dispatch(new fromStatus.SetStatus(GAME_STATUS.PAUSE));
     this.destroyGameSetInterval();
-    document.removeEventListener('keydown', this.onKeyPressArrow, true);
+  }
+
+  private gameOver() {
+    this.destroyGameSetInterval();
+    this.store.dispatch(new fromStatus.SetStatus(GAME_STATUS.GAME_OVER));
+    document.removeEventListener('keydown', this.onKeyPress, true);
   }
 
   private addNewBlock() {
@@ -77,11 +90,16 @@ export class GameComponent implements OnInit {
 
   private generateNewPosition() {
     switch (this.snakeDirection) {
-      case SNAKE_DIRECTIONS.TOP: return {...this.headPosition, X: this.headPosition.X - 1};
-      case SNAKE_DIRECTIONS.LEFT: return {...this.headPosition, Y: this.headPosition.Y - 1};
-      case SNAKE_DIRECTIONS.BOTTOM: return {...this.headPosition, X: this.headPosition.X + 1};
-      case SNAKE_DIRECTIONS.RIGHT: return {...this.headPosition, Y: this.headPosition.Y + 1};
-      default: return this.headPosition;
+      case SNAKE_DIRECTIONS.TOP:
+        return {...this.headPosition, X: this.headPosition.X - 1};
+      case SNAKE_DIRECTIONS.LEFT:
+        return {...this.headPosition, Y: this.headPosition.Y - 1};
+      case SNAKE_DIRECTIONS.BOTTOM:
+        return {...this.headPosition, X: this.headPosition.X + 1};
+      case SNAKE_DIRECTIONS.RIGHT:
+        return {...this.headPosition, Y: this.headPosition.Y + 1};
+      default:
+        return this.headPosition;
     }
   }
 
@@ -92,13 +110,25 @@ export class GameComponent implements OnInit {
       this.headPosition.X >= this.boardDimension.X;
   }
 
-  private onKeyPressArrow(e) {
+  private onKeyPress(e) {
     switch (e.code) {
-      case 'ArrowUp': this.setDirection(SNAKE_DIRECTIONS.TOP, SNAKE_DIRECTIONS.BOTTOM); return;
-      case 'ArrowLeft': this.setDirection(SNAKE_DIRECTIONS.LEFT, SNAKE_DIRECTIONS.RIGHT); return;
-      case 'ArrowDown': this.setDirection(SNAKE_DIRECTIONS.BOTTOM, SNAKE_DIRECTIONS.TOP); return;
-      case 'ArrowRight': this.setDirection(SNAKE_DIRECTIONS.RIGHT, SNAKE_DIRECTIONS.LEFT); return;
-      default: return;
+      case 'ArrowUp':
+        this.setDirection(SNAKE_DIRECTIONS.TOP, SNAKE_DIRECTIONS.BOTTOM);
+        return;
+      case 'ArrowLeft':
+        this.setDirection(SNAKE_DIRECTIONS.LEFT, SNAKE_DIRECTIONS.RIGHT);
+        return;
+      case 'ArrowDown':
+        this.setDirection(SNAKE_DIRECTIONS.BOTTOM, SNAKE_DIRECTIONS.TOP);
+        return;
+      case 'ArrowRight':
+        this.setDirection(SNAKE_DIRECTIONS.RIGHT, SNAKE_DIRECTIONS.LEFT);
+        return;
+      case 'Space':
+        this.setStatus();
+        return;
+      default:
+        return;
     }
   }
 
@@ -107,5 +137,11 @@ export class GameComponent implements OnInit {
       return;
     }
     this.store.dispatch(new fromSnake.SetDirection(newDirection));
+  }
+
+  private setStatus() {
+    (this.status === GAME_STATUS.READY || this.status === GAME_STATUS.PAUSE)
+      ? this.play()
+      : this.pause();
   }
 }
