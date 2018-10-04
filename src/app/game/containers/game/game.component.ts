@@ -31,23 +31,28 @@ export class GameComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.subscribe(console.log);
-    this.initSnake();
-  }
-
-  private initSnake() {
-    const initialBlock = {X: 3, Y: 4};
+    this.store.subscribe(state => this.initState(state));
+    const initialBlock = this.generateInitialBlock();
     this.store.dispatch(new fromSnake.SetHeadPosition(initialBlock));
     this.store.dispatch(new fromSnake.AddBlock(initialBlock));
     this.store.dispatch(new fromBoard.SetBusyBlock({position: initialBlock, value: true}));
-    this.store.subscribe(state => {
-      this.headPosition = snakeHeadSelector(state);
-      this.snakeDirection = snakeDirectionSelector(state);
-      this.snakeBlocks = snakeBlocksSelector(state);
-      this.boardDimension = boardDimensionSelector(state);
-      this.status = statusSelector(state);
-    });
     document.addEventListener('keydown', this.onKeyPress, true);
+  }
+
+  private generateInitialBlock() {
+    return {
+      X: Math.round(this.boardDimension.X / 2),
+      Y: Math.round(this.boardDimension.X / 2),
+    };
+  }
+
+  private initState(state) {
+    this.headPosition = snakeHeadSelector(state);
+    this.snakeDirection = snakeDirectionSelector(state);
+    this.snakeBlocks = snakeBlocksSelector(state);
+    this.boardDimension = boardDimensionSelector(state);
+    this.status = statusSelector(state);
+    console.log(state);
   }
 
   private createGameSetInterval() {
@@ -166,6 +171,6 @@ export class GameComponent implements OnInit {
   }
 
   private isGameFreezed() {
-    return this.status === GAME_STATUS.PAUSE || this.status === GAME_STATUS.GAME_OVER
+    return this.status === GAME_STATUS.PAUSE || this.status === GAME_STATUS.GAME_OVER;
   }
 }
