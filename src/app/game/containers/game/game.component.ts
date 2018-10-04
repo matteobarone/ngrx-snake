@@ -5,7 +5,7 @@ import * as fromSnake from '../../store/actions/snake.actions';
 import * as fromBoard from '../../store/actions/board.actions';
 import * as fromStatus from '../../store/actions/status.actions';
 import { GAME_STATUS, SNAKE_DIRECTIONS } from '../../game.constants';
-import { snakeDirectionSelector, snakeHeadSelector } from '../../store/selectors/snake.selectors';
+import { snakeBlocksSelector, snakeDirectionSelector, snakeHeadSelector } from '../../store/selectors/snake.selectors';
 import { Observable } from 'rxjs';
 import { Dimension } from '../../game.interfaces';
 import { boardBlocksSelector, boardDimensionSelector } from '../../store/selectors/board.selectors';
@@ -22,10 +22,10 @@ export class GameComponent implements OnInit {
   public snakeDirection: string;
   public status: string;
   private headPosition: Dimension;
+  private tailPosition: Dimension;
+  private snakeBlocks: Dimension[];
   private gameInterval: any;
   private SPEED = 1000;
-
-  // TODO: mettere in store lo status
 
   constructor(private store: Store<GameState>) {
     this.onKeyPress = this.onKeyPress.bind(this);
@@ -39,10 +39,12 @@ export class GameComponent implements OnInit {
   private initSnake() {
     const initialBlock = {X: 3, Y: 4};
     this.store.dispatch(new fromSnake.SetHeadPosition(initialBlock));
+    this.store.dispatch(new fromSnake.AddBlock(initialBlock));
     this.store.dispatch(new fromBoard.SetBusyBlock({position: initialBlock, value: true}));
     this.store.subscribe(state => {
       this.headPosition = snakeHeadSelector(state);
       this.snakeDirection = snakeDirectionSelector(state);
+      this.snakeBlocks = snakeBlocksSelector(state);
       this.boardDimension = boardDimensionSelector(state);
       this.status = statusSelector(state);
     });
@@ -83,9 +85,12 @@ export class GameComponent implements OnInit {
   }
 
   private addNewBlock() {
-    const newPosition = this.generateNewPosition();
-    this.store.dispatch(new fromSnake.SetHeadPosition(newPosition));
-    this.store.dispatch(new fromBoard.SetBusyBlock({position: newPosition, value: true}));
+    const positionToAdd = this.generateNewPosition();
+    this.store.dispatch(new fromSnake.SetHeadPosition(positionToAdd));
+    this.store.dispatch(new fromSnake.AddBlock(positionToAdd));
+    this.store.dispatch(new fromBoard.SetBusyBlock({position: positionToAdd, value: true}));
+    this.store.dispatch(new fromBoard.SetBusyBlock({position: this.snakeBlocks[this.snakeBlocks.length - 1], value: false}));
+    this.store.dispatch(new fromSnake.RemoveLastBlock());
   }
 
   private generateNewPosition() {
