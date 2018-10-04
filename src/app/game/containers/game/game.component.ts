@@ -22,10 +22,9 @@ export class GameComponent implements OnInit {
   public snakeDirection: string;
   public status: string;
   private headPosition: Dimension;
-  private tailPosition: Dimension;
   private snakeBlocks: Dimension[];
   private gameInterval: any;
-  private SPEED = 1000;
+  private SPEED = 500;
 
   constructor(private store: Store<GameState>) {
     this.onKeyPress = this.onKeyPress.bind(this);
@@ -60,8 +59,7 @@ export class GameComponent implements OnInit {
       this.gameOver();
       return;
     }
-    this.addNewBlock();
-    // TODO: implementare il remove della coda (in ngrx first)
+    this.moveSnake();
   }
 
   private destroyGameSetInterval() {
@@ -84,11 +82,22 @@ export class GameComponent implements OnInit {
     document.removeEventListener('keydown', this.onKeyPress, true);
   }
 
-  private addNewBlock() {
+  private moveSnake() {
+    this.addNewBlockToSnake();
+    this.removeLastBlockFromSnake();
+  }
+
+  private addNewBlockToSnake() {
+    if (this.isGameFreezed()) {
+      return;
+    }
     const positionToAdd = this.generateNewPosition();
     this.store.dispatch(new fromSnake.SetHeadPosition(positionToAdd));
     this.store.dispatch(new fromSnake.AddBlock(positionToAdd));
     this.store.dispatch(new fromBoard.SetBusyBlock({position: positionToAdd, value: true}));
+  }
+
+  private removeLastBlockFromSnake() {
     this.store.dispatch(new fromBoard.SetBusyBlock({position: this.snakeBlocks[this.snakeBlocks.length - 1], value: false}));
     this.store.dispatch(new fromSnake.RemoveLastBlock());
   }
@@ -132,12 +141,18 @@ export class GameComponent implements OnInit {
       case 'Space':
         this.setStatus();
         return;
+      case 'Enter':
+        this.addNewBlockToSnake();
+        return;
       default:
         return;
     }
   }
 
   private setDirection(newDirection: string, notAllowDirection: string): any {
+    if (this.isGameFreezed()) {
+      return;
+    }
     if ([notAllowDirection, newDirection].includes(this.snakeDirection)) {
       return;
     }
@@ -148,5 +163,9 @@ export class GameComponent implements OnInit {
     (this.status === GAME_STATUS.READY || this.status === GAME_STATUS.PAUSE)
       ? this.play()
       : this.pause();
+  }
+
+  private isGameFreezed() {
+    return this.status === GAME_STATUS.PAUSE || this.status === GAME_STATUS.GAME_OVER
   }
 }
