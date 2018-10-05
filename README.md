@@ -50,3 +50,13 @@ state: {
 - MoveSnake
 - SetApplePosition
 ```
+
+### Cordova build
+
+This will be a Cordova application:
+
+```
+npm i -g cordova
+cordova platform add android
+cordova build android
+```

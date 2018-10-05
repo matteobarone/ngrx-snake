@@ -11,3 +11,8 @@ if (environment.production) {
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));
 
+// TODO: sistemare x build cordova
+// const onDeviceReady = () => {
+//   platformBrowserDynamic().bootstrapModule(AppModule);
+// };
+// document.addEventListener('deviceready', onDeviceReady, false);
