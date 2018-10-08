@@ -27,7 +27,7 @@ export class GameComponent implements OnInit {
   private headPosition: Dimension;
   private snakeBlocks: Dimension[];
   private gameInterval: any;
-  private SPEED = 100;
+  private SPEED = 200;
 
   constructor(private store: Store<GameState>) {
     this.onKeyPress = this.onKeyPress.bind(this);
@@ -65,14 +65,30 @@ export class GameComponent implements OnInit {
     clearInterval(this.gameInterval);
   }
 
-  private play() {
+  public play() {
     this.store.dispatch(new fromStatus.SetStatus(GAME_STATUS.PLAY));
     this.createGameSetInterval();
   }
 
-  private pause() {
+  public pause() {
     this.store.dispatch(new fromStatus.SetStatus(GAME_STATUS.PAUSE));
     this.destroyGameSetInterval();
+  }
+
+  public isReady() {
+    return this.status === GAME_STATUS.READY;
+  }
+
+  public isPlay() {
+    return this.status === GAME_STATUS.PLAY;
+  }
+
+  public isPause() {
+    return this.status === GAME_STATUS.PAUSE;
+  }
+
+  public isGameOver() {
+    return this.status === GAME_STATUS.GAME_OVER;
   }
 
   private gameOver() {
@@ -86,7 +102,7 @@ export class GameComponent implements OnInit {
     this.removeLastBlockFromSnake();
   }
 
-  private addNewBlockToSnake() {
+  public addNewBlockToSnake() {
     if (this.isGameFreezed()) {
       return;
     }
@@ -126,16 +142,16 @@ export class GameComponent implements OnInit {
   private onKeyPress(e) {
     switch (e.code) {
       case 'ArrowUp':
-        this.setDirection(SNAKE_DIRECTIONS.TOP, SNAKE_DIRECTIONS.BOTTOM);
+        this.top();
         return;
       case 'ArrowLeft':
-        this.setDirection(SNAKE_DIRECTIONS.LEFT, SNAKE_DIRECTIONS.RIGHT);
+        this.left();
         return;
       case 'ArrowDown':
-        this.setDirection(SNAKE_DIRECTIONS.BOTTOM, SNAKE_DIRECTIONS.TOP);
+        this.bottom();
         return;
       case 'ArrowRight':
-        this.setDirection(SNAKE_DIRECTIONS.RIGHT, SNAKE_DIRECTIONS.LEFT);
+        this.right();
         return;
       case 'Space':
         this.setStatus();
@@ -146,6 +162,19 @@ export class GameComponent implements OnInit {
       default:
         return;
     }
+  }
+
+  public top() {
+    this.setDirection(SNAKE_DIRECTIONS.TOP, SNAKE_DIRECTIONS.BOTTOM);
+  }
+  public bottom() {
+    this.setDirection(SNAKE_DIRECTIONS.BOTTOM, SNAKE_DIRECTIONS.TOP);
+  }
+  public left() {
+    this.setDirection(SNAKE_DIRECTIONS.LEFT, SNAKE_DIRECTIONS.RIGHT);
+  }
+  public right() {
+    this.setDirection(SNAKE_DIRECTIONS.RIGHT, SNAKE_DIRECTIONS.LEFT);
   }
 
   private setDirection(newDirection: string, notAllowDirection: string): any {
@@ -159,13 +188,11 @@ export class GameComponent implements OnInit {
   }
 
   private setStatus() {
-    (this.status === GAME_STATUS.READY || this.status === GAME_STATUS.PAUSE)
-      ? this.play()
-      : this.pause();
+    (this.isReady() || this.isPause()) ? this.play() : this.pause();
   }
 
   private isGameFreezed() {
-    return this.status === GAME_STATUS.PAUSE || this.status === GAME_STATUS.GAME_OVER;
+    return this.isPause() || this.isGameOver();
   }
 
   private getRandomArbitrary(min, max) {
