@@ -6,7 +6,7 @@ import { BoardService } from '../../services/board.service';
 export interface BoardState {
   dimension: Dimension;
   blocks: {
-    [key: number]: { [key: number]: { value: boolean; } }
+    [key: number]: { [key: number]: { value: string; } }
   };
 }
 

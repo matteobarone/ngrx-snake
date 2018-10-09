@@ -11,7 +11,7 @@ if (environment.production) {
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));
 
-// TODO: sistemare x build cordova
+// TODO: sistemare x build cordova - x ora funziona anche senza, capire come mai
 // const onDeviceReady = () => {
 //   platformBrowserDynamic().bootstrapModule(AppModule);
 // };

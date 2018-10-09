@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+import {BOARD_BUSY_SYMBOLS} from "../../game.constants";
 
 @Component({
   selector: 'app-board',
@@ -11,10 +12,12 @@ export class BoardComponent implements OnInit, OnChanges {
   activeBoard: any;
   rows: string[];
   cols: string[];
+  boardBusySymbol: any;
 
   ngOnInit() {
     this.rows = Object.keys(this.boardBlocks);
     this.cols = Object.keys(this.boardBlocks[1]);
+    this.boardBusySymbol = BOARD_BUSY_SYMBOLS;
   }
 
   ngOnChanges(changes) {

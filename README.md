@@ -2,8 +2,13 @@
 
 ### Todo
 ```
- - apple
- - speed regolabile
+ - create interface for blocks
+ - reset / restart app with a single dispatch
+ - when eating apple, add slowly a new block
+ - game over when crash in snake
+ 
+ - levels
+ - config store (speed, record, ...)
 ```
 
 ### Cordova build

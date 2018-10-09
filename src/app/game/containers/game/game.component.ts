@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { GameState } from '../../store/reducers';
 import { Dimension } from '../../game.interfaces';
-import { GAME_STATUS, SNAKE_DIRECTIONS } from '../../game.constants';
+import {BOARD_BUSY_SYMBOLS, GAME_STATUS, SNAKE_DIRECTIONS} from '../../game.constants';
 import * as fromSnake from '../../store/actions';
 import * as fromBoard from '../../store/actions';
 import * as fromStatus from '../../store/actions';
@@ -28,7 +28,7 @@ export class GameComponent implements OnInit {
   private headPosition: Dimension;
   private snakeBlocks: Dimension[];
   private gameInterval: any;
-  private SPEED = 300;
+  private SPEED = 130;
 
   constructor(private store: Store<GameState>) {
     this.onKeyPress = this.onKeyPress.bind(this);
@@ -36,8 +36,13 @@ export class GameComponent implements OnInit {
 
   ngOnInit() {
     this.store.subscribe(state => this.initState(state));
-    this.store.dispatch(new fromApple.SetActiveApple({X: this.getRandomArbitrary(2, 24), Y: this.getRandomArbitrary(2, 24)}));
+    this.createApple();
     document.addEventListener('keydown', this.onKeyPress, true);
+  }
+
+  private createApple() {
+    this.store.dispatch(new fromApple.SetActiveApple({X: this.getRandomArbitrary(2, 24), Y: this.getRandomArbitrary(2, 24)}));
+    this.store.dispatch(new fromBoard.SetBusyBlock({position: this.activeApple, value: BOARD_BUSY_SYMBOLS.APPLE}));
   }
 
   private initState(state) {
@@ -62,6 +67,10 @@ export class GameComponent implements OnInit {
     }
     if (this.snakeIsSettingDirection) {
       this.store.dispatch(new fromSnake.SetIsSettingDirection(false));
+    }
+    if (this.isSnakeEatingApple()) {
+      this.addNewBlockToSnake();
+      this.createApple();
     }
     this.moveSnake();
   }
@@ -114,11 +123,14 @@ export class GameComponent implements OnInit {
     const positionToAdd = this.generateNewPosition();
     this.store.dispatch(new fromSnake.SetHeadPosition(positionToAdd));
     this.store.dispatch(new fromSnake.AddBlock(positionToAdd));
-    this.store.dispatch(new fromBoard.SetBusyBlock({position: positionToAdd, value: true}));
+    this.store.dispatch(new fromBoard.SetBusyBlock({position: positionToAdd, value: BOARD_BUSY_SYMBOLS.SNAKE}));
   }
 
   private removeLastBlockFromSnake() {
-    this.store.dispatch(new fromBoard.SetBusyBlock({position: this.snakeBlocks[this.snakeBlocks.length - 1], value: false}));
+    this.store.dispatch(new fromBoard.SetBusyBlock({
+      position: this.snakeBlocks[this.snakeBlocks.length - 1],
+      value: BOARD_BUSY_SYMBOLS.EMPTY
+    }));
     this.store.dispatch(new fromSnake.RemoveLastBlock());
   }
 
@@ -198,6 +210,14 @@ export class GameComponent implements OnInit {
 
   private setStatus() {
     (this.isReady() || this.isPause()) ? this.play() : this.pause();
+  }
+
+  private isSnakeEatingApple() {
+    return this.headPosition.X === this.activeApple.X && this.headPosition.Y === this.activeApple.Y;
+  }
+
+  public restart() {
+    console.log('restart');
   }
 
   private isGameFreezed() {

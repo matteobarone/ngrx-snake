@@ -2,29 +2,14 @@
   [boardBlocks]="(boardBlocks$ | async)">
 </app-board>
 
-<p>Direction: {{snakeDirection}}</p>
-<p>Status: {{status}}</p>
-
 <div class="game__commands">
   <div class="game__command" (click)="top()">↑</div>
   <div class="game__commands--left-right">
     <div class="game__command" (click)="left()">←</div>
-    <div
-      class="game__command"
-      *ngIf="isPlay()"
-      (click)="pause()">
-      PAUSE
-    </div>
-    <div
-      class="game__command"
-      *ngIf="isPause() || isReady()"
-      (click)="play()">
-      PLAY
-    </div>
+    <div class="game__command" *ngIf="isPlay()" (click)="pause()">PAUSE</div>
+    <div class="game__command" *ngIf="isPause() || isReady()" (click)="play()">PLAY</div>
+    <div class="game__command" *ngIf="isGameOver()" (click)="restart()">RESTART</div>
     <div class="game__command" (click)="right()">→</div>
   </div>
   <div class="game__command" (click)="bottom()">↓</div>
 </div>
-
-<div class="game__command" (click)="addNewBlockToSnake()">ADD BLOCK</div>
-

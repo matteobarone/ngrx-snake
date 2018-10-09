@@ -5,7 +5,7 @@ export const SET_BUSY_BLOCK = '[BOARD]: SET BUSY BLOCK';
 
 export class SetBusyBlock implements Action {
   readonly type = SET_BUSY_BLOCK;
-  constructor(public payload: {position: Dimension, value: boolean}) {}
+  constructor(public payload: {position: Dimension, value: string}) {}
 }
 
 export type BoardActions = SetBusyBlock;

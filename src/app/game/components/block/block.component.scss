@@ -8,8 +8,12 @@ $block-size: 12px;
   margin: $gap-xs;
   width: $block-size;
   height: $block-size;
-  &.app-block__is-busy {
+  &.app-block__is-snake {
     background: $primary;
     border-radius: $gap-xs * 2;
+  }
+  &.app-block__is-apple {
+    background: $accent;
+    border-radius: 50%;
   }
 }

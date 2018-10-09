@@ -2,7 +2,10 @@
   <div class="board__row" *ngFor="let row of rows; trackBy: trackByFn">
     <app-block
       *ngFor="let col of cols; trackBy: trackByFn"
-      [ngClass]="{'app-block__is-busy': activeBoard[row][col].value}">
+      [ngClass]="{
+        'app-block__is-snake': activeBoard[row][col].value === 'S',
+        'app-block__is-apple': activeBoard[row][col].value === 'A'
+      }">
     </app-block>
   </div>
 </div>
