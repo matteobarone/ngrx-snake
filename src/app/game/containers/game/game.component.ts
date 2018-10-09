@@ -8,7 +8,7 @@ import * as fromSnake from '../../store/actions';
 import * as fromBoard from '../../store/actions';
 import * as fromStatus from '../../store/actions';
 import * as fromApple from '../../store/actions';
-import { snakeBlocksSelector, snakeDirectionSelector, snakeHeadSelector } from '../../store/selectors/snake.selectors';
+import { snakeBlocksSelector, snakeDirectionSelector, snakeHeadSelector, snakeIsSettingDirectionSelector } from '../../store/selectors/snake.selectors';
 import { boardBlocksSelector, boardDimensionSelector } from '../../store/selectors/board.selectors';
 import { statusSelector } from '../../store/selectors/state.selectors';
 import { appleActiveSelector } from '../../store/selectors/apple.selectors';
@@ -22,12 +22,13 @@ export class GameComponent implements OnInit {
   public boardBlocks$: Observable<any> = this.store.pipe(select(boardBlocksSelector));
   public boardDimension: Dimension;
   public snakeDirection: string;
+  public snakeIsSettingDirection: boolean;
   public status: string;
   public activeApple: Dimension;
   private headPosition: Dimension;
   private snakeBlocks: Dimension[];
   private gameInterval: any;
-  private SPEED = 200;
+  private SPEED = 300;
 
   constructor(private store: Store<GameState>) {
     this.onKeyPress = this.onKeyPress.bind(this);
@@ -42,6 +43,7 @@ export class GameComponent implements OnInit {
   private initState(state) {
     this.headPosition = snakeHeadSelector(state);
     this.snakeDirection = snakeDirectionSelector(state);
+    this.snakeIsSettingDirection = snakeIsSettingDirectionSelector(state);
     this.snakeBlocks = snakeBlocksSelector(state);
     this.boardDimension = boardDimensionSelector(state);
     this.status = statusSelector(state);
@@ -57,6 +59,9 @@ export class GameComponent implements OnInit {
     if (this.snakeIsOutOfBoard()) {
       this.gameOver();
       return;
+    }
+    if (this.snakeIsSettingDirection) {
+      this.store.dispatch(new fromSnake.SetIsSettingDirection(false));
     }
     this.moveSnake();
   }
@@ -184,7 +189,11 @@ export class GameComponent implements OnInit {
     if ([notAllowDirection, newDirection].includes(this.snakeDirection)) {
       return;
     }
+    if (this.snakeIsSettingDirection) {
+      return;
+    }
     this.store.dispatch(new fromSnake.SetDirection(newDirection));
+    this.store.dispatch(new fromSnake.SetIsSettingDirection(true));
   }
 
   private setStatus() {

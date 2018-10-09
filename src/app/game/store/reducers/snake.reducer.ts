@@ -4,12 +4,14 @@ import { Dimension } from '../../game.interfaces';
 
 export interface SnakeState {
   direction: string;
+  isSettingDirection: boolean;
   blocks: Dimension[];
   headPosition?: Dimension;
 }
 
 const initialState: SnakeState = {
   direction: SNAKE_DIRECTIONS.RIGHT,
+  isSettingDirection: false,
   blocks: [{X: 1, Y: 1}],
   headPosition: {X: 1, Y: 1},
 };
@@ -31,6 +33,11 @@ export function snakeReducer(state: SnakeState = initialState, action: fromSnake
       return {
         ...state,
         direction: action.payload,
+      };
+    case fromSnake.SET_IS_SETTING_DIRECTION:
+      return {
+        ...state,
+        isSettingDirection: action.payload,
       };
     case fromSnake.SET_HEAD_POSITION:
       return {
