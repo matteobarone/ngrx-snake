@@ -3,7 +3,7 @@
 ### Todo
 ```
  - create interface for blocks
- - reset / restart app with a single dispatch
+ - actionTypes object in all actions
  - when eating apple, add slowly a new block
  - game over when crash in snake
  

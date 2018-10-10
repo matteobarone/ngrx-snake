@@ -8,6 +8,7 @@ import * as fromSnake from '../../store/actions';
 import * as fromBoard from '../../store/actions';
 import * as fromStatus from '../../store/actions';
 import * as fromApple from '../../store/actions';
+import { ResetGame } from '../../store/actions';
 import { snakeBlocksSelector, snakeDirectionSelector, snakeHeadSelector, snakeIsSettingDirectionSelector } from '../../store/selectors/snake.selectors';
 import { boardBlocksSelector, boardDimensionSelector } from '../../store/selectors/board.selectors';
 import { statusSelector } from '../../store/selectors/state.selectors';
@@ -36,12 +37,14 @@ export class GameComponent implements OnInit {
 
   ngOnInit() {
     this.store.subscribe(state => this.initState(state));
-    this.createApple();
-    document.addEventListener('keydown', this.onKeyPress, true);
+    this.ready();
   }
 
   private createApple() {
-    this.store.dispatch(new fromApple.SetActiveApple({X: this.getRandomArbitrary(2, 24), Y: this.getRandomArbitrary(2, 24)}));
+    this.store.dispatch(new fromApple.SetActiveApple({
+      X: this.getRandomArbitrary(1, this.boardDimension.X),
+      Y: this.getRandomArbitrary(1, this.boardDimension.Y),
+    }));
     this.store.dispatch(new fromBoard.SetBusyBlock({position: this.activeApple, value: BOARD_BUSY_SYMBOLS.APPLE}));
   }
 
@@ -77,6 +80,11 @@ export class GameComponent implements OnInit {
 
   private destroyGameSetInterval() {
     clearInterval(this.gameInterval);
+  }
+
+  private ready() {
+    document.addEventListener('keydown', this.onKeyPress, true);
+    this.createApple();
   }
 
   public play() {
@@ -218,6 +226,8 @@ export class GameComponent implements OnInit {
 
   public restart() {
     console.log('restart');
+    this.store.dispatch(new ResetGame());
+    this.ready();
   }
 
   private isGameFreezed() {

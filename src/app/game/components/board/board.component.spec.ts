@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BoardComponent } from './board.component';
 import { BlockComponent } from '../block/block.component';
 import { StoreModule } from '@ngrx/store';
-import { reducers } from '../../store/reducers';
+import { gameReducers } from '../../store/reducers';
 
 describe('BoardComponent', () => {
   let component: BoardComponent;
@@ -12,7 +12,7 @@ describe('BoardComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
         declarations: [BoardComponent, BlockComponent],
-        imports: [StoreModule.forRoot(reducers)]
+        imports: [StoreModule.forRoot(gameReducers)]
       })
       .compileComponents();
   }));
