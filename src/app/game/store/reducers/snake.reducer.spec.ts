@@ -10,6 +10,7 @@ describe('snakeReducer', () => {
       direction: SNAKE_DIRECTIONS.RIGHT,
       blocks: [{X: 3, Y: 3}],
       headPosition: {X: 3, Y: 3},
+      isSettingDirection: false,
     };
 
   });

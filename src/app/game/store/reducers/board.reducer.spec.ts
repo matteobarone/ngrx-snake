@@ -13,7 +13,7 @@ describe('boardReducer', () => {
     };
 
     const inputValue = {X: 3, Y: 4};
-    const newState: BoardState = boardReducer(initialState, new SetBusyBlock({position: inputValue, value: true}));
-    expect(newState.blocks[inputValue.X][inputValue.Y].value).toBe(true);
+    const newState: BoardState = boardReducer(initialState, new SetBusyBlock({position: inputValue, value: 'S'}));
+    expect(newState.blocks[inputValue.X][inputValue.Y].value).toBe('S');
   });
 });

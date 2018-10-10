@@ -22,7 +22,6 @@ export const gameReducers: ActionReducerMap<GameState> = {
 export function resetState(reducer: ActionReducer<GameState>): ActionReducer<GameState> {
   return function(state: GameState, action: Action): GameState {
     if (action.type === GameActionTypes.RESET_GAME) {
-      debugger;
       state = undefined;
     }
     return reducer(state, action);

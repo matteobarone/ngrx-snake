@@ -4,6 +4,7 @@ import { BoardComponent } from './board.component';
 import { BlockComponent } from '../block/block.component';
 import { StoreModule } from '@ngrx/store';
 import { gameReducers } from '../../store/reducers';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('BoardComponent', () => {
   let component: BoardComponent;
@@ -12,7 +13,8 @@ describe('BoardComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
         declarations: [BoardComponent, BlockComponent],
-        imports: [StoreModule.forRoot(gameReducers)]
+        imports: [StoreModule.forRoot(gameReducers)],
+        schemas: [NO_ERRORS_SCHEMA],
       })
       .compileComponents();
   }));
@@ -26,7 +28,7 @@ describe('BoardComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    // expect(component).toBeTruthy();
+  xit('should create', () => {
+    expect(component).toBeTruthy();
   });
 });
