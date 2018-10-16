@@ -1,13 +1,13 @@
 @import '~src/variables';
 
-$block-size: 12px;
+$block-numbers: 20;
 
 :host {
-  display: inline-block;
+  display: block;
   background: $secondary;
   margin: $gap-xs;
-  width: $block-size;
-  height: $block-size;
+  width: calc((100vw - 72px) / #{$block-numbers});
+  height: calc((100vw - 72px) / #{$block-numbers});
   &.app-block__is-snake {
     background: $primary;
     border-radius: $gap-xs * 2;

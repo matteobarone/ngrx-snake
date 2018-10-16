@@ -10,11 +10,11 @@ export interface BoardState {
   };
 }
 
-const INITIAL_DIMENSION = 24;
+const DIMENSION = 20;
 
 const initialState: BoardState = {
-  dimension: {X: INITIAL_DIMENSION, Y: INITIAL_DIMENSION},
-  blocks: BoardService.generateInitialBusyBlocks(INITIAL_DIMENSION),
+  dimension: {X: DIMENSION, Y: DIMENSION},
+  blocks: BoardService.generateInitialBusyBlocks(DIMENSION),
 };
 
 export function boardReducer(state: BoardState = initialState, action: fromBoard.BoardActions): BoardState {

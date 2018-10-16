@@ -5,11 +5,11 @@ import { SetBusyBlock } from '../actions/board.actions';
 describe('boardReducer', () => {
   it('should set a busy block', () => {
 
-    const INITIAL_DIMENSION = 10;
+    const DIMENSION = 10;
 
     const initialState: BoardState = {
-      dimension: {X: INITIAL_DIMENSION, Y: INITIAL_DIMENSION},
-      blocks: BoardService.generateInitialBusyBlocks(INITIAL_DIMENSION),
+      dimension: {X: DIMENSION, Y: DIMENSION},
+      blocks: BoardService.generateInitialBusyBlocks(DIMENSION),
     };
 
     const inputValue = {X: 3, Y: 4};
