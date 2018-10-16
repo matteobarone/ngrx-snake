@@ -2,10 +2,10 @@
 
 ### Todo
 ```
+ - game over when crash in snake
+ - activeApple not in snake blocks
  - create interface for blocks
  - actionTypes object in all actions
- - when eating apple, add slowly a new block
- - game over when crash in snake
  
  - levels
  - config store (speed, record, ...)

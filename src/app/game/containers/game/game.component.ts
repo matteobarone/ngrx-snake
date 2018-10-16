@@ -29,7 +29,7 @@ export class GameComponent implements OnInit {
   private headPosition: Dimension;
   private snakeBlocks: Dimension[];
   private gameInterval: any;
-  private SPEED = 130;
+  private SPEED = 200;
 
   constructor(private store: Store<GameState>) {
     this.onKeyPress = this.onKeyPress.bind(this);
@@ -74,6 +74,7 @@ export class GameComponent implements OnInit {
     if (this.isSnakeEatingApple()) {
       this.addNewBlockToSnake();
       this.createApple();
+      return;
     }
     this.moveSnake();
   }
@@ -225,7 +226,6 @@ export class GameComponent implements OnInit {
   }
 
   public restart() {
-    console.log('restart');
     this.store.dispatch(new ResetGame());
     this.ready();
   }
