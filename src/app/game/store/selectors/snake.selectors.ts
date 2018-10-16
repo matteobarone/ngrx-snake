@@ -21,3 +21,8 @@ export const snakeHeadSelector = createSelector(
   snakeSelector,
   snake => snake.headPosition,
 );
+
+export const snakeLength = createSelector(
+  snakeBlocksSelector,
+  blocks => blocks.length,
+);

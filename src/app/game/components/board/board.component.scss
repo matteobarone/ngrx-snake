@@ -4,12 +4,11 @@
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
+  width: 100%;
+  max-width: 440px;
   background: $secondary;
+  border: 1px solid $primary;
   .board {
-    &__container {
-      margin: $gap-md;
-      border: 1px solid $primary;
-    }
     &__row {
       display: flex;
       width: 100%;

@@ -3,16 +3,16 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { GameState } from '../../store/reducers';
 import { Dimension } from '../../game.interfaces';
-import {BOARD_BUSY_SYMBOLS, GAME_STATUS, SNAKE_DIRECTIONS} from '../../game.constants';
-import * as fromSnake from '../../store/actions';
-import * as fromBoard from '../../store/actions';
-import * as fromStatus from '../../store/actions';
-import * as fromApple from '../../store/actions';
 import { ResetGame } from '../../store/actions';
-import { snakeBlocksSelector, snakeDirectionSelector, snakeHeadSelector, snakeIsSettingDirectionSelector } from '../../store/selectors/snake.selectors';
-import { boardBlocksSelector, boardDimensionSelector } from '../../store/selectors/board.selectors';
-import { statusSelector } from '../../store/selectors/state.selectors';
-import { appleActiveSelector } from '../../store/selectors/apple.selectors';
+import * as fromSnakeActions from '../../store/actions';
+import * as fromBoardActions from '../../store/actions';
+import * as fromStatusActions from '../../store/actions';
+import * as fromAppleActions from '../../store/actions';
+import * as fromSnakeSelectors from '../../store/selectors';
+import * as fromBoardSelectors from '../../store/selectors';
+import * as fromStatusSelectors from '../../store/selectors';
+import * as fromAppleSelectors from '../../store/selectors';
+import {BOARD_BUSY_SYMBOLS, GAME_STATUS, SNAKE_DIRECTIONS} from '../../game.constants';
 
 @Component({
   selector: 'app-game',
@@ -20,12 +20,13 @@ import { appleActiveSelector } from '../../store/selectors/apple.selectors';
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
-  public boardBlocks$: Observable<any> = this.store.pipe(select(boardBlocksSelector));
+  public boardBlocks$: Observable<any> = this.store.pipe(select(fromBoardSelectors.boardBlocksSelector));
   public boardDimension: Dimension;
   public snakeDirection: string;
   public snakeIsSettingDirection: boolean;
   public status: string;
   public activeApple: Dimension;
+  public snakeLength: number;
   private headPosition: Dimension;
   private snakeBlocks: Dimension[];
   private gameInterval: any;
@@ -41,21 +42,22 @@ export class GameComponent implements OnInit {
   }
 
   private createApple() {
-    this.store.dispatch(new fromApple.SetActiveApple({
+    this.store.dispatch(new fromAppleActions.SetActiveApple({
       X: this.getRandomArbitrary(1, this.boardDimension.X),
       Y: this.getRandomArbitrary(1, this.boardDimension.Y),
     }));
-    this.store.dispatch(new fromBoard.SetBusyBlock({position: this.activeApple, value: BOARD_BUSY_SYMBOLS.APPLE}));
+    this.store.dispatch(new fromBoardActions.SetBusyBlock({position: this.activeApple, value: BOARD_BUSY_SYMBOLS.APPLE}));
   }
 
   private initState(state) {
-    this.headPosition = snakeHeadSelector(state);
-    this.snakeDirection = snakeDirectionSelector(state);
-    this.snakeIsSettingDirection = snakeIsSettingDirectionSelector(state);
-    this.snakeBlocks = snakeBlocksSelector(state);
-    this.boardDimension = boardDimensionSelector(state);
-    this.status = statusSelector(state);
-    this.activeApple = appleActiveSelector(state);
+    this.headPosition = fromSnakeSelectors.snakeHeadSelector(state);
+    this.snakeDirection = fromSnakeSelectors.snakeDirectionSelector(state);
+    this.snakeIsSettingDirection = fromSnakeSelectors.snakeIsSettingDirectionSelector(state);
+    this.snakeBlocks = fromSnakeSelectors.snakeBlocksSelector(state);
+    this.snakeLength = fromSnakeSelectors.snakeLength(state);
+    this.boardDimension = fromBoardSelectors.boardDimensionSelector(state);
+    this.status = fromStatusSelectors.statusSelector(state);
+    this.activeApple = fromAppleSelectors.appleActiveSelector(state);
     console.log(state);
   }
 
@@ -69,7 +71,7 @@ export class GameComponent implements OnInit {
       return;
     }
     if (this.snakeIsSettingDirection) {
-      this.store.dispatch(new fromSnake.SetIsSettingDirection(false));
+      this.store.dispatch(new fromSnakeActions.SetIsSettingDirection(false));
     }
     if (this.isSnakeEatingApple()) {
       this.addNewBlockToSnake();
@@ -89,12 +91,12 @@ export class GameComponent implements OnInit {
   }
 
   public play() {
-    this.store.dispatch(new fromStatus.SetStatus(GAME_STATUS.PLAY));
+    this.store.dispatch(new fromStatusActions.SetStatus(GAME_STATUS.PLAY));
     this.createGameSetInterval();
   }
 
   public pause() {
-    this.store.dispatch(new fromStatus.SetStatus(GAME_STATUS.PAUSE));
+    this.store.dispatch(new fromStatusActions.SetStatus(GAME_STATUS.PAUSE));
     this.destroyGameSetInterval();
   }
 
@@ -116,7 +118,7 @@ export class GameComponent implements OnInit {
 
   private gameOver() {
     this.destroyGameSetInterval();
-    this.store.dispatch(new fromStatus.SetStatus(GAME_STATUS.GAME_OVER));
+    this.store.dispatch(new fromStatusActions.SetStatus(GAME_STATUS.GAME_OVER));
     document.removeEventListener('keydown', this.onKeyPress, true);
   }
 
@@ -130,17 +132,17 @@ export class GameComponent implements OnInit {
       return;
     }
     const positionToAdd = this.generateNewPosition();
-    this.store.dispatch(new fromSnake.SetHeadPosition(positionToAdd));
-    this.store.dispatch(new fromSnake.AddBlock(positionToAdd));
-    this.store.dispatch(new fromBoard.SetBusyBlock({position: positionToAdd, value: BOARD_BUSY_SYMBOLS.SNAKE}));
+    this.store.dispatch(new fromSnakeActions.SetHeadPosition(positionToAdd));
+    this.store.dispatch(new fromSnakeActions.AddBlock(positionToAdd));
+    this.store.dispatch(new fromBoardActions.SetBusyBlock({position: positionToAdd, value: BOARD_BUSY_SYMBOLS.SNAKE}));
   }
 
   private removeLastBlockFromSnake() {
-    this.store.dispatch(new fromBoard.SetBusyBlock({
+    this.store.dispatch(new fromBoardActions.SetBusyBlock({
       position: this.snakeBlocks[this.snakeBlocks.length - 1],
       value: BOARD_BUSY_SYMBOLS.EMPTY
     }));
-    this.store.dispatch(new fromSnake.RemoveLastBlock());
+    this.store.dispatch(new fromSnakeActions.RemoveLastBlock());
   }
 
   private generateNewPosition() {
@@ -213,8 +215,8 @@ export class GameComponent implements OnInit {
     if (this.snakeIsSettingDirection) {
       return;
     }
-    this.store.dispatch(new fromSnake.SetDirection(newDirection));
-    this.store.dispatch(new fromSnake.SetIsSettingDirection(true));
+    this.store.dispatch(new fromSnakeActions.SetDirection(newDirection));
+    this.store.dispatch(new fromSnakeActions.SetIsSettingDirection(true));
   }
 
   private setStatus() {
