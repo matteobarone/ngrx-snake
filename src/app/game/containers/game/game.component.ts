@@ -32,6 +32,13 @@ export class GameComponent implements OnInit {
   private gameInterval: any;
   private SPEED = 200;
 
+  // todo: implementare al posto di setInterval - spostare in servizio
+  private fps = 2;
+  private interval = 1000/this.fps;
+  private now;
+  private then = Date.now();
+  private delta;
+
   constructor(private store: Store<GameState>) {
     this.onKeyPress = this.onKeyPress.bind(this);
   }
@@ -39,6 +46,25 @@ export class GameComponent implements OnInit {
   ngOnInit() {
     this.store.subscribe(state => this.initState(state));
     this.ready();
+    // this.draw();
+  }
+
+  // todo: implementare al posto di setInterval
+  public draw() {
+    requestAnimationFrame(() => this.draw());
+
+    this.now = Date.now();
+    this.delta = this.now - this.then;
+
+    if (this.delta > this.interval) {
+      // update time stuffs
+
+      this.then = this.now - (this.delta % this.interval);
+
+      // this.moveSnake();
+
+      // ... Code for Drawing the Frame ...
+    }
   }
 
   private createApple() {
