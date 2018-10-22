@@ -32,13 +32,6 @@ export class GameComponent implements OnInit {
   private gameInterval: any;
   private SPEED = 200;
 
-  // todo: implementare al posto di setInterval - spostare in servizio
-  private fps = 2;
-  private interval = 1000/this.fps;
-  private now;
-  private then = Date.now();
-  private delta;
-
   constructor(private store: Store<GameState>) {
     this.onKeyPress = this.onKeyPress.bind(this);
   }
@@ -46,33 +39,6 @@ export class GameComponent implements OnInit {
   ngOnInit() {
     this.store.subscribe(state => this.initState(state));
     this.ready();
-    // this.draw();
-  }
-
-  // todo: implementare al posto di setInterval
-  public draw() {
-    requestAnimationFrame(() => this.draw());
-
-    this.now = Date.now();
-    this.delta = this.now - this.then;
-
-    if (this.delta > this.interval) {
-      // update time stuffs
-
-      this.then = this.now - (this.delta % this.interval);
-
-      // this.moveSnake();
-
-      // ... Code for Drawing the Frame ...
-    }
-  }
-
-  private createApple() {
-    this.store.dispatch(new fromAppleActions.SetActiveApple({
-      X: this.getRandomArbitrary(1, this.boardDimension.X),
-      Y: this.getRandomArbitrary(1, this.boardDimension.Y),
-    }));
-    this.store.dispatch(new fromBoardActions.SetBusyBlock({position: this.activeApple, value: BOARD_BUSY_SYMBOLS.APPLE}));
   }
 
   private initState(state) {
@@ -84,7 +50,7 @@ export class GameComponent implements OnInit {
     this.boardDimension = fromBoardSelectors.boardDimensionSelector(state);
     this.status = fromStatusSelectors.statusSelector(state);
     this.activeApple = fromAppleSelectors.appleActiveSelector(state);
-    console.log(state);
+    //console.log(state);
   }
 
   private createGameSetInterval() {
@@ -92,17 +58,17 @@ export class GameComponent implements OnInit {
   }
 
   private onInterval() {
-    if (this.snakeIsOutOfBoard()) {
+    if (this.snakeIsOutOfBoard() || this.snakeIsHittingHimself()) {
       this.gameOver();
       return;
-    }
-    if (this.snakeIsSettingDirection) {
-      this.store.dispatch(new fromSnakeActions.SetIsSettingDirection(false));
     }
     if (this.isSnakeEatingApple()) {
       this.addNewBlockToSnake();
       this.createApple();
       return;
+    }
+    if (this.snakeIsSettingDirection) {
+      this.store.dispatch(new fromSnakeActions.SetIsSettingDirection(false));
     }
     this.moveSnake();
   }
@@ -114,6 +80,14 @@ export class GameComponent implements OnInit {
   private ready() {
     document.addEventListener('keydown', this.onKeyPress, true);
     this.createApple();
+  }
+
+  private createApple() {
+    this.store.dispatch(new fromAppleActions.SetActiveApple({
+      X: this.getRandomArbitrary(1, this.boardDimension.X),
+      Y: this.getRandomArbitrary(1, this.boardDimension.Y),
+    }));
+    this.store.dispatch(new fromBoardActions.SetBusyBlock({position: this.activeApple, value: BOARD_BUSY_SYMBOLS.APPLE}));
   }
 
   public play() {
@@ -191,6 +165,12 @@ export class GameComponent implements OnInit {
       this.headPosition.Y > this.boardDimension.Y ||
       this.headPosition.X < 1 ||
       this.headPosition.X > this.boardDimension.X;
+  }
+
+  private snakeIsHittingHimself() {
+    return this.snakeBlocks
+      .slice(1)
+      .find(block => block.X === this.headPosition.X && block.Y === this.headPosition.Y);
   }
 
   private onKeyPress(e) {
