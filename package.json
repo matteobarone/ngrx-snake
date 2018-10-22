@@ -4,7 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot --open",
-    "build": "ng build --prod --aot --base-href . --output-path ../ngrx-snake/www/",
+    "build": "npm run build:angular && npm run build:cordova",
+    "build:angular": "ng build --prod --aot --base-href . --output-path ../ngrx-snake/www/",
+    "build:cordova": "cordova build android",
     "test": "ng test --code-coverage",
     "lint": "ng lint",
     "e2e": "ng e2e"

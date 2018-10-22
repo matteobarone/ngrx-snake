@@ -2,21 +2,22 @@
 
 ### Todo
 ```
- - create interface for blocks
- - actionTypes object in all actions
+* create interface for blocks
+* actionTypes object in all actions
+* testing reducers
  
- - levels
- - config store (speed, record, ...)
+* routing with ngrx
+* levels
+* welcome page
+* setting/config page (speed, record, ...)
 ```
 
 ### Cordova build
 
-This will be a Cordova application:
-
+Build for production:
 ```
-npm i -g cordova
-add an empty www folder in the root of project
-cordova platform add android
-npm run build
-cordova build android
+* npm i -g cordova
+* add an empty www folder in the root of project
+* cordova platform add android
+* npm run build
 ```
