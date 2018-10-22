@@ -30,7 +30,7 @@ export class GameComponent implements OnInit {
   private headPosition: Dimension;
   private snakeBlocks: Dimension[];
   private gameInterval: any;
-  private SPEED = 200;
+  private SPEED = 120;
 
   constructor(private store: Store<GameState>) {
     this.onKeyPress = this.onKeyPress.bind(this);
@@ -50,7 +50,7 @@ export class GameComponent implements OnInit {
     this.boardDimension = fromBoardSelectors.boardDimensionSelector(state);
     this.status = fromStatusSelectors.statusSelector(state);
     this.activeApple = fromAppleSelectors.appleActiveSelector(state);
-    //console.log(state);
+    // console.log(state);
   }
 
   private createGameSetInterval() {
@@ -82,12 +82,27 @@ export class GameComponent implements OnInit {
     this.createApple();
   }
 
-  private createApple() {
-    this.store.dispatch(new fromAppleActions.SetActiveApple({
-      X: this.getRandomArbitrary(1, this.boardDimension.X),
-      Y: this.getRandomArbitrary(1, this.boardDimension.Y),
-    }));
-    this.store.dispatch(new fromBoardActions.SetBusyBlock({position: this.activeApple, value: BOARD_BUSY_SYMBOLS.APPLE}));
+  private createApple(): void {
+    this.createRandomApple().then((data: Dimension) => {
+      this.store.dispatch(new fromAppleActions.SetActiveApple(data));
+      this.store.dispatch(new fromBoardActions.SetBusyBlock({position: this.activeApple, value: BOARD_BUSY_SYMBOLS.APPLE}));
+    });
+  }
+
+  private createRandomApple(): Promise<Dimension> {
+    return new Promise((resolve) => {
+      const X = this.getRandomArbitrary(1, this.boardDimension.X);
+      const Y = this.getRandomArbitrary(1, this.boardDimension.Y);
+      const conditionIsBlockOccupied = this.snakeBlocks.find(block => block.X === X && block.Y === Y);
+      if (!conditionIsBlockOccupied) {
+        resolve({X, Y});
+        return;
+      }
+      this.createRandomApple().then((data) => {
+        resolve(data);
+        return;
+      })
+    });
   }
 
   public play() {

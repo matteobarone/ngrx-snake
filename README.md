@@ -2,8 +2,6 @@
 
 ### Todo
 ```
- - game over when crash in snake
- - activeApple not in snake blocks
  - create interface for blocks
  - actionTypes object in all actions
  

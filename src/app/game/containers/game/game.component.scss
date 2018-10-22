@@ -9,7 +9,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: $gap-lg;
+  margin-top: $gap-md;
   &--left-right {
     width: 100%;
     display: flex;
@@ -18,11 +18,11 @@
 }
 
 .game__command {
-  width: 30%;
+  width: 33%;
   display: flex;
   justify-content: center;
   align-items: center;
   border: 1px solid $primary;
-  padding: $gap-lg;
-  margin: $gap-sm 0;
+  padding: $gap-xl;
+  margin: $gap-xs;
 }
