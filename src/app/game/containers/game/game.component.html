@@ -1,3 +1,5 @@
+<div class="game__score">Score: {{snakeLength}}</div>
+
 <app-board
   [boardBlocks]="(boardBlocks$ | async)">
 </app-board>
@@ -13,5 +15,3 @@
   </div>
   <div class="game__command" (click)="bottom()">↓</div>
 </div>
-
-<div>{{snakeLength}}</div>

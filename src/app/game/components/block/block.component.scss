@@ -3,15 +3,19 @@
 :host {
   display: block;
   background: $secondary;
+  opacity: .5;
   margin: $gap-xs;
-  width: calc((100vw - 72px) / #{$block-numbers});
-  height: calc((100vw - 72px) / #{$block-numbers});
+  width: calc((100vw - 54px) / #{$block-numbers});
+  height: calc((100vw - 54px) / #{$block-numbers});
+
   &.app-block__is-snake {
-    background: $primary;
-    border-radius: $gap-xs * 2;
+    background-image: linear-gradient($primary-dirty, $primary);
+    opacity: 1;
+    border-radius: $gap-xs * 4;
   }
   &.app-block__is-apple {
-    background: $accent;
+    background-image: linear-gradient($accent-dirty, $accent);
+    opacity: 1;
     border-radius: 50%;
   }
 }

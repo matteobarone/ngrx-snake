@@ -2,7 +2,7 @@
 
 :host {
   display: block;
-  margin: $gap-md;
+  padding: $gap-sm;
 }
 
 .game__commands {
@@ -22,7 +22,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid $primary;
-  padding: $gap-xl;
-  margin: $gap-xs;
+  border: 2px solid $secondary;
+  border-radius: 10px;
+  height: 80px;
+  margin: $gap-sm / 2;
+  font-size: 16px;
+}
+
+.game__score {
+  text-align: right;
+  margin-bottom: $gap-sm;
 }
