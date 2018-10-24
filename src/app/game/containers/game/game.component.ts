@@ -30,7 +30,7 @@ export class GameComponent implements OnInit {
   private headPosition: Dimension;
   private snakeBlocks: Dimension[];
   private gameInterval: any;
-  private SPEED = 120;
+  private SPEED = 150;
 
   constructor(private store: Store<GameState>) {
     this.onKeyPress = this.onKeyPress.bind(this);
