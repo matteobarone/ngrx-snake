@@ -4,12 +4,12 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  color: $accent;
+  color: $primary;
 }
 
 body {
-  background-image: linear-gradient($primary-light, $primary-dirty);
+  background: $secondary;
   min-height: 100vh;
-  font-family: Futura, sans-serif;
-  font-size: 12px;
+  font-family: "Courier New", sans-serif;
+  font-size: 14px;
 }

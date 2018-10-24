@@ -22,11 +22,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid $secondary;
-  border-radius: 10px;
+  background: $primary;
+  color: $secondary;
+  border-radius: $border-radius;
   height: 80px;
   margin: $gap-sm / 2;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .game__score {

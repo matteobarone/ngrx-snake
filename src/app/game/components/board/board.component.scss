@@ -6,10 +6,10 @@
   justify-content: center;
   width: 100%;
   max-width: 440px;
-  .board {
-    &__row {
-      display: flex;
-      width: 100%;
-    }
+  border: 2px solid $primary;
+  border-radius: $border-radius;
+  .board__row {
+    display: flex;
+    width: 100%;
   }
 }
