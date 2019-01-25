@@ -46,7 +46,7 @@ export class GameComponent implements OnInit {
     this.snakeDirection = fromSnakeSelectors.snakeDirectionSelector(state);
     this.snakeIsSettingDirection = fromSnakeSelectors.snakeIsSettingDirectionSelector(state);
     this.snakeBlocks = fromSnakeSelectors.snakeBlocksSelector(state);
-    this.snakeLength = fromSnakeSelectors.snakeLength(state);
+    this.snakeLength = fromSnakeSelectors.snakeLength(state) - 1;
     this.boardDimension = fromBoardSelectors.boardDimensionSelector(state);
     this.status = fromStatusSelectors.statusSelector(state);
     this.activeApple = fromAppleSelectors.appleActiveSelector(state);
@@ -101,7 +101,7 @@ export class GameComponent implements OnInit {
       this.createRandomApple().then((data) => {
         resolve(data);
         return;
-      })
+      });
     });
   }
 
