@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { RouterGo } from '@core/router/store/actions';
 
 @Component({
   selector: 'app-intro',
@@ -7,13 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class IntroComponent implements OnInit {
 
-  constructor() { }
+  constructor(private store: Store<any>) { }
 
   ngOnInit() {
   }
 
-  goToGame() {
-
+  public goToGame() {
+    this.store.dispatch(new RouterGo({path: ['game']}));
   }
-
 }
