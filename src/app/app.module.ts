@@ -2,8 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { GameModule } from './game/game.module';
+import { GameModule } from './features/game/game.module';
 import { StoreModule } from '@ngrx/store';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -11,7 +12,7 @@ import { StoreModule } from '@ngrx/store';
   ],
   imports: [
     BrowserModule,
-    GameModule,
+    AppRoutingModule,
     StoreModule.forRoot({}),
   ],
   providers: [],
