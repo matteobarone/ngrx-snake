@@ -5,6 +5,8 @@
   margin: $gap-xs;
   width: calc((100vw - 54px) / #{$block-numbers});
   height: calc((100vw - 54px) / #{$block-numbers});
+  max-width: $max-block-size;
+  max-height: $max-block-size;
   border-radius: $border-radius;
 
   &.app-block__is-snake {

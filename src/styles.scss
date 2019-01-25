@@ -10,6 +10,8 @@
 body {
   background: $secondary;
   min-height: 100vh;
+  max-width: 450px;
   font-family: "Courier New", sans-serif;
   font-size: 14px;
+  margin: 0 auto;
 }
